@@ -18,14 +18,20 @@ import java.lang.reflect.Proxy;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.ReflectionUtils.FieldCallback;
 
 import com.bix_digital.platform.federate.ContainerAwareAutoWired;
 import com.bix_digital.platform.federate.impl.ContainerAwareWireProxy;
-import com.bix_digital.platform.federate.impl.util.ContextHelper;
+import com.bix_digital.platform.federate.impl.util.InitialContextHelper;
 
+/**
+ * Field callback, responsible for setting up the autowired client side proxy
+ * @author utschig
+ *
+ */
 public class ContainerAwareFieldProcessorCallback implements FieldCallback
 {
     private ConfigurableListableBeanFactory configurableBeanFactory;
@@ -33,9 +39,10 @@ public class ContainerAwareFieldProcessorCallback implements FieldCallback
     
     private Logger logger = LoggerFactory.getLogger(ContainerAwareFieldProcessorCallback.class);
 
-    private ContextHelper context;
+    @Autowired
+    private InitialContextHelper context;
     
-    public ContainerAwareFieldProcessorCallback(ConfigurableListableBeanFactory bf, Object bean, ContextHelper context) {
+    public ContainerAwareFieldProcessorCallback(ConfigurableListableBeanFactory bf, Object bean, InitialContextHelper context) {
         configurableBeanFactory = bf;
         this.bean = bean;
         this.context = context;

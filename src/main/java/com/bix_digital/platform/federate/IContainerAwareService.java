@@ -14,7 +14,7 @@
 package com.bix_digital.platform.federate;
 
 /**
- * interface for testing purposes .. 
+ * Interface for testing purposes
  * @author utschig
  */
 public interface IContainerAwareService {

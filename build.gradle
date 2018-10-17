@@ -1,11 +1,10 @@
 buildscript {
 	ext {
 		springBootVersion = '2.0.5.RELEASE'
-    nexus_url = "${project.findProperty("nexus_url") ?: System.getenv("NEXUS_HOST")}"
-    nexus_folder = "candidates"
-    nexus_user = "${project.findProperty("nexus_user") ?: System.getenv("NEXUS_USERNAME")}"
-    nexus_pw = "${project.findProperty("nexus_pw") ?: System.getenv("NEXUS_PASSWORD")}"
-
+	    nexus_url = "${project.findProperty("nexus_url") ?: System.getenv("NEXUS_HOST")}"
+	    nexus_folder = "candidates"
+	    nexus_user = "${project.findProperty("nexus_user") ?: System.getenv("NEXUS_USERNAME")}"
+	    nexus_pw = "${project.findProperty("nexus_pw") ?: System.getenv("NEXUS_PASSWORD")}"
 	}
 	repositories {
 		maven () {
@@ -87,8 +86,11 @@ dependencies {
 	compile('org.springframework.restdocs:spring-restdocs-mockmvc')
 }
 
-bootJar {
-}
+//bootJar {
+//	mainClass "com.bix_digital.platform.federate.DemoApplication.class"
+//	archiveName     "app.jar"
+//	destinationDir  file("$buildDir/../docker")
+//}
 
 test {
 	systemProperty "spring.profiles.active", "local"

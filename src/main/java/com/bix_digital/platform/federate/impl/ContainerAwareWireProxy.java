@@ -23,7 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bix_digital.platform.federate.ContainerAwareAutoWired;
-import com.bix_digital.platform.federate.impl.util.ContextHelper;
+import com.bix_digital.platform.federate.impl.util.InitialContextHelper;
 
 /**
  * This is the proxy on the consumer (Wire) side 
@@ -41,9 +41,9 @@ public class ContainerAwareWireProxy implements InvocationHandler
     private final Map<String, List<String>> podMapping =
     	new HashMap<String, List<String>>();
     
-    private ContextHelper context;
+    private InitialContextHelper context;
     
-    public ContainerAwareWireProxy(String name, ContainerAwareAutoWired annotation, ContextHelper context) 
+    public ContainerAwareWireProxy(String name, ContainerAwareAutoWired annotation, InitialContextHelper context) 
     		throws Exception
     {
         this.containerWireAnnotation = annotation;

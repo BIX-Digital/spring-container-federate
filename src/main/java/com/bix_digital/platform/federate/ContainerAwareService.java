@@ -26,7 +26,12 @@ import org.springframework.stereotype.Service;
 @Target(TYPE)
 @Service
 @Documented
-public @interface ContainerAwareService {
+/**
+ * Denotes the client side annotation, that inherits from autowired
+ * @author utschig
+ */
+public @interface ContainerAwareService 
+{
 
 	/**
 	 * Number of (pod) instances to be created 

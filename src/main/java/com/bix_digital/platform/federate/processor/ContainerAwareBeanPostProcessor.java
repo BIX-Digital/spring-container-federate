@@ -29,9 +29,14 @@ import org.springframework.util.ReflectionUtils;
 import com.bix_digital.platform.federate.ContainerAwareService;
 import com.bix_digital.platform.federate.IContainerAwareService;
 import com.bix_digital.platform.federate.impl.ContainerAwareServiceProxy;
-import com.bix_digital.platform.federate.impl.util.ContextHelper;
+import com.bix_digital.platform.federate.impl.util.InitialContextHelper;
 
 @Component
+/**
+ * Bean processor that sets up the (Server)side proxy for an annotated bean
+ * @author utschig
+ *
+ */
 public class ContainerAwareBeanPostProcessor implements BeanPostProcessor 
 {
     private ConfigurableListableBeanFactory configurableBeanFactory;
@@ -39,7 +44,7 @@ public class ContainerAwareBeanPostProcessor implements BeanPostProcessor
     private Logger logger = LoggerFactory.getLogger(ContainerAwareBeanPostProcessor.class);
     
     @Autowired
-    private ContextHelper context;
+    private InitialContextHelper context;
     
     @Autowired
     public ContainerAwareBeanPostProcessor(ConfigurableListableBeanFactory beanFactory) throws Exception 
@@ -50,8 +55,7 @@ public class ContainerAwareBeanPostProcessor implements BeanPostProcessor
 	@Override
 	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
 		
-		if (bean.getClass().isAnnotationPresent(ContainerAwareService.class) || 
-				bean instanceof IContainerAwareService) 
+		if (bean.getClass().isAnnotationPresent(ContainerAwareService.class)) 
 		{
 			logger.debug("Found service: '" + beanName + "' for class '" + bean.getClass().getName() + "'");
 			try 
@@ -75,8 +79,13 @@ public class ContainerAwareBeanPostProcessor implements BeanPostProcessor
 	            	AutowireCapableBeanFactory.AUTOWIRE_BY_NAME, true);
 	            configurableBeanFactory.registerSingleton(beanName, bean);
 				return bean;
-			} catch (Exception eSetupServiceException) {
-				eSetupServiceException.printStackTrace();
+			} catch (Exception eSetupServiceException) 
+			{
+				if (eSetupServiceException instanceof javax.naming.NoInitialContextException) 
+				{
+					throw new BeanCreationException("Could not setup service '" + beanName 
+						+ "' in the container context, are you sure you run containered?!");
+				}
 				throw new BeanCreationException("Could not setup service '" + beanName 
 					+ "' Exception: " + eSetupServiceException.getMessage());
 			}	

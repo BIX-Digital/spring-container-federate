@@ -26,6 +26,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Target(ElementType.FIELD)
 @Autowired
 @Documented
+/**
+ * Denotes the client side annotation, that inherits from autowired
+ * @author utschig
+ */
 public @interface ContainerAwareAutoWired {
 	
 }
