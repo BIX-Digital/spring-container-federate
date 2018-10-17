@@ -1,0 +1,95 @@
+buildscript {
+	ext {
+		springBootVersion = '2.0.5.RELEASE'
+    nexus_url = "${project.findProperty("nexus_url") ?: System.getenv("NEXUS_HOST")}"
+    nexus_folder = "candidates"
+    nexus_user = "${project.findProperty("nexus_user") ?: System.getenv("NEXUS_USERNAME")}"
+    nexus_pw = "${project.findProperty("nexus_pw") ?: System.getenv("NEXUS_PASSWORD")}"
+
+	}
+	repositories {
+		maven () {
+        url "${nexus_url}/repository/jcenter/"
+        credentials {
+          username = "${nexus_user}"
+          password = "${nexus_pw}"
+        }
+      }
+
+      maven () {
+        url "${nexus_url}/repository/maven-public/"
+        credentials {
+          username = "${nexus_user}"
+          password = "${nexus_pw}"
+        }
+      }
+
+      maven () {
+        url "${nexus_url}/repository/atlassian_public/"
+        credentials {
+          username = "${nexus_user}"
+          password = "${nexus_pw}"
+        }
+      }
+
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'jacoco'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+group = 'spring-container-federate'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+	maven () {
+        url "${nexus_url}/repository/jcenter/"
+        credentials {
+          username = "${nexus_user}"
+          password = "${nexus_pw}"
+        }
+      }
+
+      maven () {
+        url "${nexus_url}/repository/maven-public/"
+        credentials {
+          username = "${nexus_user}"
+          password = "${nexus_pw}"
+        }
+      }
+
+      maven () {
+        url "${nexus_url}/repository/atlassian_public/"
+        credentials {
+          username = "${nexus_user}"
+          password = "${nexus_pw}"
+        }
+      }
+
+}
+
+
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter-data-rest')
+	compile('org.springframework.boot:spring-boot-starter-jersey')
+	compile('org.springframework.boot:spring-boot-starter-web')
+	compile('org.springframework.boot:spring-boot-starter-tomcat')
+	compileOnly('org.projectlombok:lombok')
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+	compile('org.springframework.restdocs:spring-restdocs-mockmvc')
+}
+
+bootJar {
+}
+
+test {
+	systemProperty "spring.profiles.active", "local"
+}
