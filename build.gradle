@@ -86,11 +86,19 @@ dependencies {
 	compile('org.springframework.restdocs:spring-restdocs-mockmvc')
 }
 
-//bootJar {
-//	mainClass "com.bix_digital.platform.federate.DemoApplication.class"
-//	archiveName     "app.jar"
-//	destinationDir  file("$buildDir/../docker")
-//}
+bootRun {
+	classpath = sourceSets.test.runtimeClasspath
+}
+
+bootJar {
+	mainClassName "com.bix_digital.platform.federate.DemoApplication"
+	from('build/classes/java/test') {
+		include '**/*.class'
+		into 'BOOT-INF/classes'
+	}
+	archiveName     "app.jar"
+	destinationDir  file("$buildDir/../docker")
+}
 
 test {
 	systemProperty "spring.profiles.active", "local"

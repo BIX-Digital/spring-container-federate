@@ -16,8 +16,10 @@ package com.bix_digital.platform.federate;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootApplication
+@ActiveProfiles(profiles = {"remote"})
 public class DemoApplication {
 
 	public static void main(String[] args) {
